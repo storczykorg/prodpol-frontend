@@ -14,3 +14,17 @@ site:
 
 ui:
   found_results: "Found no results | Found one result | Found {count} results"
+  sorting:
+    title: "Sorting"
+    sorting_keys: "Sort using"
+    sorting_dir: "Asc/Desc"
+  search:
+    title: "Search"
+
+admin:
+  link: "Admin Panel"
+  title: "Admin Panel"
+  exit: "Exit Admin Panel"
+
+  employees:
+    link: "Manage Employees"

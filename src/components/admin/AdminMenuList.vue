@@ -15,7 +15,10 @@ const props = defineProps<{
         {{ item.text }}
       </router-link>
       <details v-else-if="item.type == 'group'">
-        <summary>{{ item.text }}</summary>
+        <summary>
+          <component :is="item.icon" v-if="item.icon"/>
+          {{ item.text }}
+        </summary>
         <ul class="p-2 bg-base-100 w-40 z-1">
           <li v-for="(subitem, subkey) in item.links" :key="subkey">
             <router-link :to="subitem.link">{{subitem.text}}</router-link>
@@ -27,6 +30,7 @@ const props = defineProps<{
   <ul v-else class="menu">
     <li v-for="(item, key) in props.items" :key="key">
       <router-link v-if="item.type == 'link'" :to="item.link">
+        <component :is="item.icon" v-if="item.icon"/>
         {{ item.text }}
       </router-link>
       <template v-else-if="item.type == 'group'">

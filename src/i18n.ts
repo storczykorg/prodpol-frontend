@@ -1,4 +1,4 @@
-import { createI18n, type PluralizationRule } from "vue-i18n";
+import {createI18n, type PluralizationRule} from "vue-i18n";
 import messages from "@intlify/unplugin-vue-i18n/messages";
 
 const plPluralization: PluralizationRule = (choice) => {
@@ -26,6 +26,6 @@ export const i18n = createI18n({
     pl: plPluralization,
   },
   messages,
-  locale: "pl",
+  locale: localStorage.getItem("lang") ?? "pl",
   availableLocales: ["en", "pl"],
 });

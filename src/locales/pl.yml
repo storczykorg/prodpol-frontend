@@ -1,6 +1,78 @@
-message:
+app:
+  name: "Prodpol"
+  footer: "Strona wykonana przez Orchidea Barbara Zych"
+
+action:
   login: "Zaloguj się"
-  footer_text: "Strona wykonana przez Orchidea Barbara Zych"
+  take_me: "Załaduj się do"
+  cancel: "Anuluj"
+  confirm: "Potwierdź"
+  delete: "Usuń"
+  edit: "Edytuj"
+  view: "Wyświetl"
+  create: "Utwórz"
+  save: "Zapisz"
+  reset: "Resetuj"
+
+site:
+  homepage: "Strona główna"
+  about: "O nas"
+  licences: "Licencje"
+  cart: "Koszyk"
+  contact: "Kontakt"
+  terms: "Warunki użytkowania"
+  privacy: "Polityka prywatności"
 
 ui:
-  found_results: "Nie znaleziono wyników | Znaleziono jeden wynik | Znaleziono {n} wyniki | Znalezionio {n} wyników"
+  found_results: "Nie znaleziono wyników | Znaleziono jeden wynik | Znaleziono {count} wyników"
+  sorting:
+    title: "Sortowanie"
+    sorting_keys: "Sortuj według"
+    sorting_dir: "Kolejność"
+  search:
+    title: "Wyszukiwanie"
+    placeholder: "Wyszukaj coś..."
+    clear: "Wyczyść wyszukiwanie"
+  common:
+    add: "Dodaj"
+    remove: "Usuń"
+    list: "Pokaż listę"
+    refresh: "Odśwież"
+    options: "Opcje"
+
+admin:
+  link: "Panel administracyjny"
+  title: "Panel administracyjny"
+  exit: "Wyjście z panelu"
+  dashboard:
+    title: "Panel"
+    recent_activity: "Ostatnie akcje"
+    system_status: "Status systemu"
+  settings:
+    title: "Ustawienia"
+    general: "Ogólne"
+    security: "Bezpieczeństwo"
+    notifications: "Powiadomienia"
+  employees:
+    title: "Pracownicy"
+    link: "Zarządzaj pracownikami"
+    roles:
+      link: "Zarządzaj grupami"
+      title: "Grupy Pracowników"
+      id: "Id"
+      role_name: "Nazwa roli"
+      display_name: "Wyświetlona nazwa"
+  search:
+    identifier: "Identyfikator"
+    full_name: "Imię i nazwisko"
+    group: "Grupa"
+    all_groups: "Wszystkie"
+    no_group: "Żadna"
+
+message:
+  resource_not_found: "Zasób, który szukasz, nie istnieje"
+  error_occurred: "Wystąpił błąd podczas przetwarzania Twojego żądania"
+  please_wait: "Czekaj, podczas przetwarzania Twojego żądania"
+  success_saved: "Zmiany zapisane pomyślnie"
+  invalid_credentials: "Nieprawidłowe dane logowania. Proszę spróbuj ponownie."
+  account_locked: "Twoje konto jest tymczasowo zablokowane. Proszę spróbuj ponownie później."

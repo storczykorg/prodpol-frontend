@@ -1,3 +1,10 @@
+/*
+ * Copyright 2026 storczyk.org. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>.
+ *
+ */
+
 /* eslint-disable */
 /* prettier-ignore */
 // oxfmt-ignore
@@ -7,16 +14,7 @@
 // It's recommended to commit this file.
 // Make sure to add this file to your tsconfig.json file as an "includes" or "files" entry.
 
-import type {
-  RouteRecordInfo,
-  ParamValue,
-  ParamValueOneOrMore,
-  ParamValueZeroOrMore,
-  ParamValueZeroOrOne,
-} from 'vue-router'
-import type {
-  _ExtractParamParserType,
-} from 'vue-router/experimental'
+import type {ParamValue, RouteRecordInfo,} from 'vue-router'
 
 declare module 'vue-router' {
   interface TypesConfig {
@@ -57,12 +55,20 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       Record<never, never>,
       | '/admin/'
+      | '/admin/employee-roles/'
       | '/admin/employees/'
       | '/admin/employees/add'
     >,
     '/admin/': RouteRecordInfo<
       '/admin/',
       '/admin',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/employee-roles/': RouteRecordInfo<
+      '/admin/employee-roles/',
+      '/admin/employee-roles',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -116,6 +122,7 @@ declare module 'vue-router/auto-routes' {
       routes:
         | '/admin'
         | '/admin/'
+        | '/admin/employee-roles/'
         | '/admin/employees/'
         | '/admin/employees/add'
       views:
@@ -124,6 +131,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/admin/index.vue': {
       routes:
         | '/admin/'
+      views:
+        | never
+    }
+    'src/pages/admin/employee-roles/index.vue': {
+      routes:
+        | '/admin/employee-roles/'
       views:
         | never
     }

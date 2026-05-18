@@ -1,3 +1,10 @@
+<!--
+  - Copyright 2026 storczyk.org. All rights reserved.
+  - This work is licensed under the terms of the MIT license.
+  - For a copy, see <https://opensource.org/licenses/MIT>.
+  -
+  -->
+
 <script setup lang="ts">
 
 import AdminMenuList from "../components/admin/AdminMenuList.vue";
@@ -10,17 +17,28 @@ const { t } = useI18n();
 
 const menuList = [
   {
-    type: "link",
-    link: "/admin/employees",
-    text: t("admin.employees.link"),
-    icon: HardHat
+    type: "group",
+    text: t("admin.employees.title"),
+    icon: HardHat,
+    links: [
+      {
+        type: "link",
+        link: "/admin/employees",
+        text: t("admin.employees.link"),
+      },
+      {
+        type: "link",
+        link: "/admin/employee-roles",
+        text: t("admin.employees.roles.link"),
+      },
+    ],
   },
   {
     type: "link",
     link: "/",
     text: t("admin.exit"),
     icon: ArrowLeft
-  }
+  },
 ] satisfies MenuItem[];
 
 </script>

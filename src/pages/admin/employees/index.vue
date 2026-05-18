@@ -1,6 +1,13 @@
+<!--
+  - Copyright 2026 storczyk.org. All rights reserved.
+  - This work is licensed under the terms of the MIT license.
+  - For a copy, see <https://opensource.org/licenses/MIT>.
+  -
+  -->
+
 <script setup lang="ts">
 
-import { useRouteQuery } from '@vueuse/router'
+import {useRouteQuery} from '@vueuse/router'
 import {useI18n} from "vue-i18n";
 import {ref, type ShallowRef} from "vue";
 import {useAllEmployeesQuery} from "../../../data/server/employees.ts";
@@ -31,20 +38,20 @@ const allEmployees = data as ShallowRef<EmployeeArray>;
 </script>
 
 <template>
-  <article class="items-center flex flex-col lg:w-3/5">
+  <article class="items-center flex flex-col">
     <h2 class="font-bold text-xl">{{ t("admin.employees.link") }}</h2>
-    <router-link to="/admin/employees/add" class="btn btn-primary m-4">Add</router-link>
+    <router-link class="btn btn-primary m-4" to="/admin/employees/add">{{ t("admin.employees.add") }}</router-link>
     <fieldset class="fieldset
     bg-base-200 border-base-300 rounded-box border
     p-4 flex flex-wrap justify-between w-full gap-8">
       <legend class="fieldset-legend">{{ t("ui.search.title") }}</legend>
       <div>
-        <label class="label">Identyfikator</label>
-        <input type="text" class="input" placeholder="My awesome page" v-model="search_params.id" />
+        <label class="label">{{ t("admin.employees.search.identifier") }}</label>
+        <input v-model="search_params.id" :placeholder="t('ui.search.placeholder')" class="input" type="text"/>
       </div>
       <div>
-        <label class="label">Nazwisko</label>
-        <input type="text" class="input" placeholder="my-awesome-page" v-model="search_params.name" />
+        <label class="label">{{ t("admin.employees.search.full_name") }}</label>
+        <input v-model="search_params.name" :placeholder="t('ui.search.placeholder')" class="input" type="text"/>
       </div>
       <div>
         <label class="label">Grupa</label>
@@ -61,20 +68,20 @@ const allEmployees = data as ShallowRef<EmployeeArray>;
     bg-base-200 border-base-300 rounded-box border
     p-4 flex flex-wrap w-full justify-between gap-8">
       <legend class="fieldset-legend"> {{ t("ui.sorting.title") }} </legend>
-      <div>
-        <label class="label block">Sortowanie według</label>
-        <select class="select select-neutral text-sm leading-0.5 w-lg">
-          <option selected>Utworzono</option>
-          <option>Imię i nazwisko</option>
-          <option>Identyfikator</option>
-          <option>Nazwa roli</option>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend block">{{ t("ui.sorting.sorting_keys") }}</legend>
+        <select class="select select-neutral text-smw-lg">
+          <option selected>{{ t("ui.sorting.created_at") }}</option>
+          <option>{{ t("ui.sorting.full_name") }}</option>
+          <option>{{ t("ui.sorting.identifier") }}</option>
+          <option>{{ t("ui.sorting.role_name") }}</option>
         </select>
-      </div>
+      </fieldset>
       <div>
-        <label class="label">Kolejność</label>
-        <select class="select select-neutral text-sm leading-0.5">
-          <option selected>Malejąco</option>
-          <option>Rosnąco</option>
+        <label class="label">{{ t("ui.sorting.sorting_order") }}</label>
+        <select class="select select-neutral text-sm">
+          <option selected>{{ t("ui.sorting.descending") }}</option>
+          <option>{{ t("ui.sorting.ascending") }}</option>
         </select>
       </div>
     </fieldset>
@@ -114,8 +121,8 @@ const allEmployees = data as ShallowRef<EmployeeArray>;
     <div v-else-if="isLoading" class="flex text-center justify-center">
       <span class="loading loading-spinner loading-xl m-8"></span>
     </div>
-    <div v-else class="overflow-x-auto container">
-      <table class="table">
+    <div v-else class="overflow-x-auto w-full">
+      <table class="table w-full">
         <!-- head -->
         <thead>
         <tr>

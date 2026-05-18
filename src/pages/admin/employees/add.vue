@@ -1,5 +1,12 @@
+<!--
+  - Copyright 2026 storczyk.org. All rights reserved.
+  - This work is licensed under the terms of the MIT license.
+  - For a copy, see <https://opensource.org/licenses/MIT>.
+  -
+  -->
+
 <script setup lang="ts">
-import { ArrowLeft } from "@lucide/vue";
+import {ArrowLeft} from "@lucide/vue";
 import {computed, onBeforeUnmount, type Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
@@ -37,11 +44,12 @@ lg:w-5/6
 bg-base-200 border border-base-100
 rounded-2xl p-8 min-h-[50vh]
 flex justify-start flex-col
+items-center
 ">
-  <div class="flex justify-start">
+  <div class="flex justify-start w-full">
     <button v-if="canBack" class="btn btn-ghost" @click="router.back()"> <ArrowLeft /> </button>
   </div>
-  <div>
+  <div class="flex flex-col justify-center items-stretch w-64">
 
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Zdjęcie</legend>
@@ -76,7 +84,7 @@ flex justify-start flex-col
         <option selected>Bez grupy</option>
       </select>
     </fieldset>
-    <button class="btn btn-primary my-4">Dodaj</button>
+    <button class="btn btn-primary btn-wide my-4">Dodaj</button>
   </div>
 </article>
 </template>

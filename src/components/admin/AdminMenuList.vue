@@ -1,3 +1,10 @@
+<!--
+  - Copyright 2026 storczyk.org. All rights reserved.
+  - This work is licensed under the terms of the MIT license.
+  - For a copy, see <https://opensource.org/licenses/MIT>.
+  -
+  -->
+
 <script setup lang="ts">
 import type {MenuItem} from "../MenuItems.ts";
 
@@ -16,7 +23,7 @@ const props = defineProps<{
       </router-link>
       <details v-else-if="item.type == 'group'">
         <summary>
-          <component :is="item.icon" v-if="item.icon"/>
+          <component :is="item.icon" v-if="item.icon" class="h-[1em]"/>
           {{ item.text }}
         </summary>
         <ul class="p-2 bg-base-100 w-40 z-1">

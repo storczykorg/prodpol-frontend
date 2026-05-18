@@ -1,3 +1,10 @@
+/*
+ * Copyright 2026 storczyk.org. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>.
+ *
+ */
+
 import {createI18n, type PluralizationRule} from "vue-i18n";
 import messages from "@intlify/unplugin-vue-i18n/messages";
 
@@ -21,7 +28,7 @@ const plPluralization: PluralizationRule = (choice) => {
 };
 
 export const i18n = createI18n({
-  fallbackLocale: "pl",
+  fallbackLocale: "en",
   pluralRules: {
     pl: plPluralization,
   },

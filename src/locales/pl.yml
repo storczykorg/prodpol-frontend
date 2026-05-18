@@ -1,3 +1,6 @@
 message:
   login: "Zaloguj się"
   footer_text: "Strona wykonana przez Orchidea Barbara Zych"
+
+ui:
+  found_results: "Nie znaleziono wyników | Znaleziono jeden wynik | Znaleziono {n} wyniki | Znalezionio {n} wyników"

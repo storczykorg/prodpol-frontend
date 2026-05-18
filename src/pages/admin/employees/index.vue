@@ -2,7 +2,9 @@
 
 import { useRouteQuery } from '@vueuse/router'
 import {useI18n} from "vue-i18n";
-import {ref} from "vue";
+import {ref, type ShallowRef} from "vue";
+import {useAllEmployeesQuery} from "../../../data/server/employees.ts";
+import type {EmployeeArray} from "../../../data/types/employee.ts";
 
 const { t } = useI18n()
 
@@ -16,11 +18,22 @@ const search_params = ref({
   page: useRouteQuery("page", '1'),
 });
 
+const {
+  data,
+  error,
+  isLoading,
+  refetch,
+  status
+} = useAllEmployeesQuery()
+
+const allEmployees = data as ShallowRef<EmployeeArray>;
+
 </script>
 
 <template>
-  <article class="items-center flex flex-col">
+  <article class="items-center flex flex-col lg:w-3/5">
     <h2 class="font-bold text-xl">{{ t("admin.employees.link") }}</h2>
+    <router-link to="/admin/employees/add" class="btn btn-primary m-4">Add</router-link>
     <fieldset class="fieldset
     bg-base-200 border-base-300 rounded-box border
     p-4 flex flex-wrap justify-between w-full gap-8">
@@ -66,21 +79,42 @@ const search_params = ref({
       </div>
     </fieldset>
 
-    <div class="flex justify-between align-bottom flex-wrap w-full">
-      <h3 class="text-lg font-semibold p-4">Znaleziono: 2137 wyników</h3>
-      <fieldset class="fieldset">
-        <legend class="fieldset-legend">Limit na stronę</legend>
-        <select class="select select-neutral text-sm" v-model="search_params.limit">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-      </fieldset>
+    <div class="flex justify-between items-baseline flex-wrap w-full mt-4">
+      <h3 class="text-lg font-semibold p-4">{{ t("ui.found_results", allEmployees?.length ?? 0) }} </h3>
+      <div class="flex gap-4 items-end">
+        <button class="btn" @click="() => refetch()">Odśwież</button>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Limit na stronę</legend>
+          <select class="select select-neutral text-sm" v-model="search_params.limit">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </fieldset>
+      </div>
+      </div>
+    <div v-if="error" class="flex text-center justify-center w-full">
+      <div role="alert" class="alert alert-error alert-soft m-8 w-full">
+        <details class="collapse">
+          <summary class="collapse-title font-semibold">
+            {{ t("ui.error.loading") }}: {{ error?.message }}
+          </summary>
+          <div class="collapse-content text-sm">
+            <h3 class="font-semibold text-lg">Callstack</h3>
+            <code class="whitespace-pre-line text-sm">
+            {{ error?.stack }}
+            </code>
+          </div>
+        </details>
+      </div>
     </div>
-    <div class="overflow-x-auto">
+    <div v-else-if="isLoading" class="flex text-center justify-center">
+      <span class="loading loading-spinner loading-xl m-8"></span>
+    </div>
+    <div v-else class="overflow-x-auto container">
       <table class="table">
         <!-- head -->
         <thead>
@@ -98,7 +132,7 @@ const search_params = ref({
         </thead>
         <tbody>
         <!-- row 1 -->
-        <tr>
+        <tr v-for="item in allEmployees" :key="item.id" >
           <th>
             <label>
               <input type="checkbox" class="checkbox" />
@@ -114,7 +148,7 @@ const search_params = ref({
                 </div>
               </div>
               <div>
-                <div class="font-bold">Hart Hagerty</div>
+                <div class="font-bold">{{ item.firstName }} {{ item.lastName }}</div>
                 <div class="text-sm opacity-50">United States</div>
               </div>
             </div>
@@ -125,102 +159,6 @@ const search_params = ref({
             <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
           </td>
           <td>Purple</td>
-          <th>
-            <button class="btn btn-ghost btn-xs">details</button>
-          </th>
-        </tr>
-        <!-- row 2 -->
-        <tr>
-          <th>
-            <label>
-              <input type="checkbox" class="checkbox" />
-            </label>
-          </th>
-          <td>
-            <div class="flex items-center gap-3">
-              <div class="avatar">
-                <div class="mask mask-squircle h-12 w-12">
-                  <img
-                      src="https://img.daisyui.com/images/profile/demo/3@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
-                </div>
-              </div>
-              <div>
-                <div class="font-bold">Brice Swyre</div>
-                <div class="text-sm opacity-50">China</div>
-              </div>
-            </div>
-          </td>
-          <td>
-            Carroll Group
-            <br />
-            <span class="badge badge-ghost badge-sm">Tax Accountant</span>
-          </td>
-          <td>Red</td>
-          <th>
-            <button class="btn btn-ghost btn-xs">details</button>
-          </th>
-        </tr>
-        <!-- row 3 -->
-        <tr>
-          <th>
-            <label>
-              <input type="checkbox" class="checkbox" />
-            </label>
-          </th>
-          <td>
-            <div class="flex items-center gap-3">
-              <div class="avatar">
-                <div class="mask mask-squircle h-12 w-12">
-                  <img
-                      src="https://img.daisyui.com/images/profile/demo/4@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
-                </div>
-              </div>
-              <div>
-                <div class="font-bold">Marjy Ferencz</div>
-                <div class="text-sm opacity-50">Russia</div>
-              </div>
-            </div>
-          </td>
-          <td>
-            Rowe-Schoen
-            <br />
-            <span class="badge badge-ghost badge-sm">Office Assistant I</span>
-          </td>
-          <td>Crimson</td>
-          <th>
-            <button class="btn btn-ghost btn-xs">details</button>
-          </th>
-        </tr>
-        <!-- row 4 -->
-        <tr>
-          <th>
-            <label>
-              <input type="checkbox" class="checkbox" />
-            </label>
-          </th>
-          <td>
-            <div class="flex items-center gap-3">
-              <div class="avatar">
-                <div class="mask mask-squircle h-12 w-12">
-                  <img
-                      src="https://img.daisyui.com/images/profile/demo/5@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
-                </div>
-              </div>
-              <div>
-                <div class="font-bold">Yancy Tear</div>
-                <div class="text-sm opacity-50">Brazil</div>
-              </div>
-            </div>
-          </td>
-          <td>
-            Wyman-Ledner
-            <br />
-            <span class="badge badge-ghost badge-sm">Community Outreach Specialist</span>
-          </td>
-          <td>Indigo</td>
           <th>
             <button class="btn btn-ghost btn-xs">details</button>
           </th>

@@ -11,9 +11,9 @@ export const useServerPing: () => UseQueryReturn<unknown, Error, undefined> = de
         "Content-Type": "text/plain",
       },
     })
-      .then((res) => {
+      .then(async (res) => {
         if (res.ok)
-          return res.text();
+          return await res.text();
         else
           throw Error("Error");
       }),

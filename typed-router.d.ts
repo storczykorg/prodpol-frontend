@@ -58,6 +58,7 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | '/admin/'
       | '/admin/employees/'
+      | '/admin/employees/add'
     >,
     '/admin/': RouteRecordInfo<
       '/admin/',
@@ -69,6 +70,13 @@ declare module 'vue-router/auto-routes' {
     '/admin/employees/': RouteRecordInfo<
       '/admin/employees/',
       '/admin/employees',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/employees/add': RouteRecordInfo<
+      '/admin/employees/add',
+      '/admin/employees/add',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -109,6 +117,7 @@ declare module 'vue-router/auto-routes' {
         | '/admin'
         | '/admin/'
         | '/admin/employees/'
+        | '/admin/employees/add'
       views:
         | 'default'
     }
@@ -121,6 +130,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/admin/employees/index.vue': {
       routes:
         | '/admin/employees/'
+      views:
+        | never
+    }
+    'src/pages/admin/employees/add.vue': {
+      routes:
+        | '/admin/employees/add'
       views:
         | never
     }

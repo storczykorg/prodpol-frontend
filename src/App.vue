@@ -3,10 +3,11 @@ import "./style.css";
 
 import { useRouter} from "vue-router"
 import {layoutStrategy} from "./layouts";
+import {computed} from "vue";
 
 const router = useRouter()
 
-const layout = layoutStrategy(router)
+const layout = computed(() => layoutStrategy(router))
 
 </script>
 

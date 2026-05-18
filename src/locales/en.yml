@@ -11,3 +11,6 @@ site:
   about: "About us"
   licences: "Licences"
   cart: "Cart"
+
+ui:
+  found_results: "Found no results | Found one result | Found {count} results"

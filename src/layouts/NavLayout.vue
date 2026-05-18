@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <nav class="navbar sticky flex justify-between align-middle glass">
+  <nav class="navbar sticky flex justify-between items-center glass">
     <span>
 
     </span>
@@ -14,7 +14,7 @@
 
     </span>
   </nav>
-  <main class="p-4">
+  <main class="flex justify-center p-4">
     <slot></slot>
   </main>
   <footer></footer>

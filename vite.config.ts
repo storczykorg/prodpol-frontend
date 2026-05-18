@@ -1,4 +1,11 @@
-import { defineConfig, loadEnv } from "vite";
+/*
+ * Copyright 2026 storczyk.org. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>.
+ *
+ */
+
+import {defineConfig, loadEnv} from "vite";
 import VueRouter from "vue-router/vite";
 import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";

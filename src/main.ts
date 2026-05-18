@@ -1,10 +1,17 @@
-import { createApp } from "vue";
-import { router } from "./routes";
+/*
+ * Copyright 2026 storczyk.org. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>.
+ *
+ */
+
+import {createApp} from "vue";
+import {router} from "./routes";
 import App from "./App.vue";
-import { createPinia } from "pinia";
-import { PiniaColada } from "@pinia/colada";
-import { i18n } from "./i18n.ts";
-import { PiniaColadaAutoRefetch } from "@pinia/colada-plugin-auto-refetch";
+import {createPinia} from "pinia";
+import {PiniaColada} from "@pinia/colada";
+import {i18n} from "./i18n.ts";
+import {PiniaColadaAutoRefetch} from "@pinia/colada-plugin-auto-refetch";
 
 const pinia = createPinia();
 

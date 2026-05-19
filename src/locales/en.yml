@@ -26,6 +26,9 @@ ui:
     clear: "Clear search"
   common:
     add: "Add"
+    added: "Added"
+    yes: "Yes"
+    no: "No"
     remove: "Remove"
     list: "List"
     refresh: "Refresh"

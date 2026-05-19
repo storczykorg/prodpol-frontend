@@ -2,7 +2,6 @@
   - Copyright 2026 storczyk.org. All rights reserved.
   - This work is licensed under the terms of the MIT license.
   - For a copy, see <https://opensource.org/licenses/MIT>.
-  -
   -->
 
 <script setup lang="ts">
@@ -11,9 +10,9 @@ import {useRouteQuery} from '@vueuse/router'
 import {useI18n} from "vue-i18n";
 import {ref, type ShallowRef} from "vue";
 import {useAllEmployeesQuery} from "../../../data/server/employees.ts";
-import type {EmployeeArray} from "../../../data/types/employee.ts";
+import type {EmployeeReadArray} from "../../../data/types/employee.ts";
 
-const { t } = useI18n()
+const {t, d} = useI18n()
 
 const search_params = ref({
   id: useRouteQuery("id", ''),
@@ -33,7 +32,7 @@ const {
   status
 } = useAllEmployeesQuery()
 
-const allEmployees = data as ShallowRef<EmployeeArray>;
+const allEmployees = data as ShallowRef<EmployeeReadArray>;
 
 </script>
 
@@ -131,9 +130,9 @@ const allEmployees = data as ShallowRef<EmployeeArray>;
               <input type="checkbox" class="checkbox" />
             </label>
           </th>
-          <th>Name</th>
-          <th>Job</th>
-          <th>Favorite Color</th>
+          <th> {{ t("admin.search.full_name") }}</th>
+          <th> {{ t("site.contact") }}</th>
+          <th> {{ t("admin.employees.enabled") }}</th>
           <th></th>
         </tr>
         </thead>
@@ -155,32 +154,38 @@ const allEmployees = data as ShallowRef<EmployeeArray>;
                 </div>
               </div>
               <div>
-                <div class="font-bold">{{ item.firstName }} {{ item.lastName }}</div>
-                <div class="text-sm opacity-50">United States</div>
+                <div class="font-bold">{{ item.nameFirst }}
+                  <wbr>
+                  {{ item.nameLast }}
+                </div>
+                <div class="text-sm opacity-50"> {{ item.roleName }}</div>
               </div>
             </div>
           </td>
           <td>
-            Zemlak, Daniel and Leannon
-            <br />
-            <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
+            {{ item.email }}
+            <br/>
+            <span class="badge badge-ghost badge-sm"> {{ item.phoneNumber }} </span>
           </td>
-          <td>Purple</td>
+          <td>{{ item.enabled ? t("ui.common.yes") : t("ui.common.no") }}
+            <br />
+            <span class="badge badge-ghost badge-sm"> {{ t("ui.common.added") }} {{
+                d(Date.parse(item.createdAt))
+              }} </span>
+          </td>
           <th>
-            <button class="btn btn-ghost btn-xs">details</button>
+            <div class="dropdown dropdown-end">
+              <div class="btn btn-ghost btn-xs" role="button" tabindex="0"> {{ t("ui.common.options") }}</div>
+              <ul
+                  class="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm"
+                  tabindex="-1">
+                <li><a>Edytuj</a></li>
+                <li><a class="bg-error text-error-content">Usuń</a></li>
+              </ul>
+            </div>
           </th>
         </tr>
         </tbody>
-        <!-- foot -->
-        <tfoot>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Job</th>
-          <th>Favorite Color</th>
-          <th></th>
-        </tr>
-        </tfoot>
       </table>
     </div>
     <div class="join">

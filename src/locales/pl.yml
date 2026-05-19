@@ -35,7 +35,10 @@ ui:
     clear: "Wyczyść wyszukiwanie"
   common:
     add: "Dodaj"
+    added: "Dodano"
     remove: "Usuń"
+    yes: "Tak"
+    no: "Nie"
     list: "Pokaż listę"
     refresh: "Odśwież"
     options: "Opcje"
@@ -62,6 +65,7 @@ admin:
       id: "Id"
       role_name: "Nazwa roli"
       display_name: "Wyświetlona nazwa"
+    enabled: "Aktywowane"
   search:
     identifier: "Identyfikator"
     full_name: "Imię i nazwisko"

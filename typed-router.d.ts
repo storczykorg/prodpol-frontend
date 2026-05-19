@@ -1,9 +1,3 @@
-/*
- * Copyright 2026 storczyk.org. All rights reserved.
- * This work is licensed under the terms of the MIT license.
- * For a copy, see <https://opensource.org/licenses/MIT>.
- */
-
 /* eslint-disable */
 /* prettier-ignore */
 // oxfmt-ignore
@@ -13,7 +7,16 @@
 // It's recommended to commit this file.
 // Make sure to add this file to your tsconfig.json file as an "includes" or "files" entry.
 
-import type {ParamValue, RouteRecordInfo,} from 'vue-router'
+import type {
+  RouteRecordInfo,
+  ParamValue,
+  ParamValueOneOrMore,
+  ParamValueZeroOrMore,
+  ParamValueZeroOrOne,
+} from 'vue-router'
+import type {
+  _ExtractParamParserType,
+} from 'vue-router/experimental'
 
 declare module 'vue-router' {
   interface TypesConfig {

@@ -5,7 +5,7 @@
  */
 
 import eslint from "@eslint/js";
-import type {Linter} from "eslint";
+import type { Linter } from "eslint";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import stylistic from "@stylistic/eslint-plugin";

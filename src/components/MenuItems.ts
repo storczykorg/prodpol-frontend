@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
 
-import type {Component} from "vue";
+import type { Component } from "vue";
 
 export type MenuItem = MenuLinkType | MenuGroup;
 export type MenuLinkType = {

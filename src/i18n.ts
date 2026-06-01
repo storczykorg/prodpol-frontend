@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
 
-import {createI18n, type PluralizationRule} from "vue-i18n";
+import { createI18n, type PluralizationRule } from "vue-i18n";
 import messages from "@intlify/unplugin-vue-i18n/messages";
 
 const plPluralization: PluralizationRule = (choice) => {

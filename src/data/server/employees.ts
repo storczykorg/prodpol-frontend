@@ -4,8 +4,8 @@
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
 
-import {defineQuery, useQuery, type UseQueryReturn} from "@pinia/colada";
-import {type EmployeeArray, employeeReadArraySchema} from "../types/employee.ts";
+import { defineQuery, useQuery, type UseQueryReturn } from "@pinia/colada";
+import { type EmployeeArray, employeeReadArraySchema } from "../types/Employee.ts";
 
 export const useAllEmployeesQuery: () => UseQueryReturn<unknown, Error, undefined> = defineQuery(() => {
   return useQuery({

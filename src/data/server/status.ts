@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
 
-import {defineQuery, useQuery, type UseQueryReturn} from "@pinia/colada";
+import { defineQuery, useQuery, type UseQueryReturn } from "@pinia/colada";
 
 export const useServerPing: () => UseQueryReturn<unknown, Error, undefined> = defineQuery(() => {
   return useQuery({

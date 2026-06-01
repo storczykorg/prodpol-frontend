@@ -4,8 +4,8 @@
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
 
-import type {Router} from "vue-router";
-import type {Component} from "vue";
+import type { Router } from "vue-router";
+import type { Component } from "vue";
 import DefaultLayout from "./DefaultLayout.vue";
 import NavLayout from "./NavLayout.vue";
 import AdminLayout from "./AdminLayout.vue";

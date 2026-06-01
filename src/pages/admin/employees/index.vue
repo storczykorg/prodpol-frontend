@@ -6,13 +6,14 @@
 
 <script setup lang="ts">
 
-import {useRouteQuery} from '@vueuse/router'
-import {useI18n} from "vue-i18n";
-import {ref, type ShallowRef} from "vue";
-import {useAllEmployeesQuery} from "../../../data/server/employees.ts";
-import type {EmployeeReadArray} from "../../../data/types/employee.ts";
+import { useRouteQuery } from '@vueuse/router'
+import { useI18n } from "vue-i18n";
+import { ref, type ShallowRef } from "vue";
+import { useAllEmployeesQuery } from "../../../data/server/employees.ts";
+import type { EmployeeReadArray } from "../../../data/types/Employee.ts";
+import EmployeeGroupSelector from '../../../components/admin/EmployeeGroupSelector.vue';
 
-const {t, d} = useI18n()
+const { t, d } = useI18n()
 
 const search_params = ref({
   id: useRouteQuery("id", ''),
@@ -46,22 +47,13 @@ const allEmployees = data as ShallowRef<EmployeeReadArray>;
       <legend class="fieldset-legend">{{ t("ui.search.title") }}</legend>
       <div>
         <label class="label">{{ t("admin.employees.search.identifier") }}</label>
-        <input v-model="search_params.id" :placeholder="t('ui.search.placeholder')" class="input" type="text"/>
+        <input v-model="search_params.id" :placeholder="t('ui.search.placeholder')" class="input" type="text" />
       </div>
       <div>
         <label class="label">{{ t("admin.employees.search.full_name") }}</label>
-        <input v-model="search_params.name" :placeholder="t('ui.search.placeholder')" class="input" type="text"/>
+        <input v-model="search_params.name" :placeholder="t('ui.search.placeholder')" class="input" type="text" />
       </div>
-      <div>
-        <label class="label">Grupa</label>
-        <select class="select select-neutral text-sm">
-          <option selected>Wszyscy </option>
-          <option>Magazyn</option>
-          <option>Obsługa klienta</option>
-          <option>Administracja</option>
-          <option>Bez grupy</option>
-        </select>
-      </div>
+      <employee-group-selector :allow-empty="true" :allow-all="true" default-value="all" />
     </fieldset>
     <fieldset class="fieldset
     bg-base-200 border-base-300 rounded-box border
@@ -101,7 +93,7 @@ const allEmployees = data as ShallowRef<EmployeeReadArray>;
           </select>
         </fieldset>
       </div>
-      </div>
+    </div>
     <div v-if="error" class="flex text-center justify-center w-full">
       <div role="alert" class="alert alert-error alert-soft m-8 w-full">
         <details class="collapse">
@@ -124,67 +116,64 @@ const allEmployees = data as ShallowRef<EmployeeReadArray>;
       <table class="table w-full">
         <!-- head -->
         <thead>
-        <tr>
-          <th>
-            <label>
-              <input type="checkbox" class="checkbox" />
-            </label>
-          </th>
-          <th> {{ t("admin.search.full_name") }}</th>
-          <th> {{ t("site.contact") }}</th>
-          <th> {{ t("admin.employees.enabled") }}</th>
-          <th></th>
-        </tr>
+          <tr>
+            <th>
+              <label>
+                <input type="checkbox" class="checkbox" />
+              </label>
+            </th>
+            <th> {{ t("admin.search.full_name") }}</th>
+            <th> {{ t("site.contact") }}</th>
+            <th> {{ t("admin.employees.enabled") }}</th>
+            <th></th>
+          </tr>
         </thead>
         <tbody>
-        <!-- row 1 -->
-        <tr v-for="item in allEmployees" :key="item.id" >
-          <th>
-            <label>
-              <input type="checkbox" class="checkbox" />
-            </label>
-          </th>
-          <td>
-            <div class="flex items-center gap-3">
-              <div class="avatar">
-                <div class="mask mask-squircle h-12 w-12">
-                  <img
-                      src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+          <!-- row 1 -->
+          <tr v-for="item in allEmployees" :key="item.id">
+            <th>
+              <label>
+                <input type="checkbox" class="checkbox" />
+              </label>
+            </th>
+            <td>
+              <div class="flex items-center gap-3">
+                <div class="avatar">
+                  <div class="mask mask-squircle h-12 w-12">
+                    <img src="https://img.daisyui.com/images/profile/demo/2@94.webp"
                       alt="Avatar Tailwind CSS Component" />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div class="font-bold">{{ item.nameFirst }}
-                  <wbr>
+                <div>
+                  <div class="font-bold">{{ item.nameFirst }}
+                    <wbr>
                   {{ item.nameLast }}
+                  </div>
+                  <div class="text-sm opacity-50"> {{ item.roleName }}</div>
                 </div>
-                <div class="text-sm opacity-50"> {{ item.roleName }}</div>
               </div>
-            </div>
-          </td>
-          <td>
-            {{ item.email }}
-            <br/>
-            <span class="badge badge-ghost badge-sm"> {{ item.phoneNumber }} </span>
-          </td>
-          <td>{{ item.enabled ? t("ui.common.yes") : t("ui.common.no") }}
-            <br />
-            <span class="badge badge-ghost badge-sm"> {{ t("ui.common.added") }} {{
+            </td>
+            <td>
+              {{ item.email }}
+              <br />
+              <span class="badge badge-ghost badge-sm"> {{ item.phoneNumber }} </span>
+            </td>
+            <td>{{ item.enabled ? t("ui.common.yes") : t("ui.common.no") }}
+              <br />
+              <span class="badge badge-ghost badge-sm"> {{ t("ui.common.added") }} {{
                 d(Date.parse(item.createdAt))
-              }} </span>
-          </td>
-          <th>
-            <div class="dropdown dropdown-end">
-              <div class="btn btn-ghost btn-xs" role="button" tabindex="0"> {{ t("ui.common.options") }}</div>
-              <ul
-                  class="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm"
-                  tabindex="-1">
-                <li><a>Edytuj</a></li>
-                <li><a class="bg-error text-error-content">Usuń</a></li>
-              </ul>
-            </div>
-          </th>
-        </tr>
+                }} </span>
+            </td>
+            <th>
+              <div class="dropdown dropdown-end">
+                <div class="btn btn-ghost btn-xs" role="button" tabindex="0"> {{ t("ui.common.options") }}</div>
+                <ul class="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm" tabindex="-1">
+                  <li><a>Edytuj</a></li>
+                  <li><a class="bg-error text-error-content">Usuń</a></li>
+                </ul>
+              </div>
+            </th>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -196,6 +185,4 @@ const allEmployees = data as ShallowRef<EmployeeReadArray>;
   </article>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,3 +1,9 @@
+<!--
+  - Copyright 2026 storczyk.org. All rights reserved.
+  - This work is licensed under the terms of the MIT license.
+  - For a copy, see <https://opensource.org/licenses/MIT>.
+  -->
+
 <template>
     <div>
         <label :for="labelFor" class="label">Grupa</label>
@@ -20,9 +26,10 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-import type { EmployeeRole } from "../../data/types/EmployeeRole";
-import { useId } from "vue";
+import {useI18n} from "vue-i18n";
+import {useId} from "vue";
+import {useAllEmployeeRolesQuery} from "../../data/server/employeeRoles";
+
 const { t } = useI18n();
 const labelFor = useId()
 
@@ -33,8 +40,6 @@ const props = defineProps<{
 }>()
 
 const model = defineModel<string | "all" | "empty" | null>({ default: null });
-
-import { useAllEmployeeRolesQuery } from "../../data/server/employeeRoles";
 
 const { data: employeeRoles, error, refresh, isPending } = useAllEmployeeRolesQuery();
 </script>

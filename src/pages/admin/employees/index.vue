@@ -6,34 +6,47 @@
 
 <script setup lang="ts">
 
-import { useRouteQuery } from '@vueuse/router'
-import { useI18n } from "vue-i18n";
-import { ref, type ShallowRef } from "vue";
-import { useAllEmployeesQuery } from "../../../data/server/employees.ts";
-import type { EmployeeReadArray } from "../../../data/types/Employee.ts";
+import {useRouteQuery} from '@vueuse/router'
+import {useI18n} from "vue-i18n";
+import {computed, type ComputedRef, ref, unref} from "vue";
 import EmployeeGroupSelector from '../../../components/admin/EmployeeGroupSelector.vue';
+import type {EmployeeOrderKeys} from "#server/types/EmployeeOrderKeys.ts";
+import type {EmployeeSearchOption} from "#server/types/EmployeeSearchOption.ts";
+import {useInfiniteQuery} from "@pinia/colada";
+import {defineSearchEmployeesQuery} from "../../../data/server/employees.ts";
 
-const { t, d } = useI18n()
+const {t, d} = useI18n()
 
 const search_params = ref({
   id: useRouteQuery("id", ''),
-  name: useRouteQuery("name", ''),
-  group: useRouteQuery("group", 'all'),
-  sort_key: useRouteQuery("sort_key", 'created_at'),
-  sort: useRouteQuery("sort", 'asc'),
+  fullName: useRouteQuery("name", ''),
+  phoneNumber: useRouteQuery("phoneNumber", ''),
+  email: useRouteQuery("email", ''),
+  sort_key: useRouteQuery("sort_key", ('EmployeeId' satisfies EmployeeOrderKeys)),
+  asc: useRouteQuery("sort", 'false'),
   limit: useRouteQuery("limit", '10'),
-  page: useRouteQuery("page", '1'),
+  cursor: useRouteQuery("page", '-1'),
 });
+
+const coladaSearchOption: ComputedRef<EmployeeSearchOption> = computed(() => {
+  return {
+    asc: Boolean(search_params.value.asc),
+    cursor: Number(search_params.value.cursor),
+    email: search_params.value.email,
+    fullName: search_params.value.fullName,
+    phoneNumber: search_params.value.phoneNumber,
+    limit: Number(search_params.value.limit),
+    orderBy: search_params.value.sort_key,
+  } satisfies EmployeeSearchOption
+})
 
 const {
   data,
   error,
   isLoading,
   refetch,
-  status
-} = useAllEmployeesQuery()
-
-const allEmployees = data as ShallowRef<EmployeeReadArray>;
+  loadNextPage
+} = useInfiniteQuery(() => defineSearchEmployeesQuery(coladaSearchOption))
 
 </script>
 
@@ -47,18 +60,18 @@ const allEmployees = data as ShallowRef<EmployeeReadArray>;
       <legend class="fieldset-legend">{{ t("ui.search.title") }}</legend>
       <div>
         <label class="label">{{ t("admin.employees.search.identifier") }}</label>
-        <input v-model="search_params.id" :placeholder="t('ui.search.placeholder')" class="input" type="text" />
+        <input v-model="search_params.id" :placeholder="t('ui.search.placeholder')" class="input" type="text"/>
       </div>
       <div>
         <label class="label">{{ t("admin.employees.search.full_name") }}</label>
-        <input v-model="search_params.name" :placeholder="t('ui.search.placeholder')" class="input" type="text" />
+        <input v-model="search_params.fullName" :placeholder="t('ui.search.placeholder')" class="input" type="text"/>
       </div>
-      <employee-group-selector :allow-empty="true" :allow-all="true" default-value="all" />
+      <employee-group-selector :allow-all="true" :allow-empty="true" default-value="all"/>
     </fieldset>
     <fieldset class="fieldset
     bg-base-200 border-base-300 rounded-box border
     p-4 flex flex-wrap w-full justify-between gap-8">
-      <legend class="fieldset-legend"> {{ t("ui.sorting.title") }} </legend>
+      <legend class="fieldset-legend"> {{ t("ui.sorting.title") }}</legend>
       <fieldset class="fieldset">
         <legend class="fieldset-legend block">{{ t("ui.sorting.sorting_keys") }}</legend>
         <select class="select select-neutral text-smw-lg">
@@ -103,7 +116,7 @@ const allEmployees = data as ShallowRef<EmployeeReadArray>;
           <div class="collapse-content text-sm">
             <h3 class="font-semibold text-lg">Callstack</h3>
             <code class="whitespace-pre-line text-sm">
-            {{ error?.stack }}
+              {{ error?.stack }}
             </code>
           </div>
         </details>
@@ -112,75 +125,73 @@ const allEmployees = data as ShallowRef<EmployeeReadArray>;
     <div v-else-if="isLoading" class="flex text-center justify-center">
       <span class="loading loading-spinner loading-xl m-8"></span>
     </div>
-    <div v-else class="overflow-x-auto w-full">
+    <div v-for="(page, pageIndex) in data?.pages ?? []" v-else :key="pageIndex" class="overflow-x-auto w-full">
       <table class="table w-full">
         <!-- head -->
         <thead>
-          <tr>
-            <th>
-              <label>
-                <input type="checkbox" class="checkbox" />
-              </label>
-            </th>
-            <th> {{ t("admin.search.full_name") }}</th>
-            <th> {{ t("site.contact") }}</th>
-            <th> {{ t("admin.employees.enabled") }}</th>
-            <th></th>
-          </tr>
+        <tr>
+          <th>
+            <label>
+              <input class="checkbox" type="checkbox"/>
+            </label>
+          </th>
+          <th> {{ t("admin.search.full_name") }}</th>
+          <th> {{ t("site.contact") }}</th>
+          <th> {{ t("admin.employees.enabled") }}</th>
+          <th></th>
+        </tr>
         </thead>
         <tbody>
-          <!-- row 1 -->
-          <tr v-for="item in allEmployees" :key="item.id">
-            <th>
-              <label>
-                <input type="checkbox" class="checkbox" />
-              </label>
-            </th>
-            <td>
-              <div class="flex items-center gap-3">
-                <div class="avatar">
-                  <div class="mask mask-squircle h-12 w-12">
-                    <img src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
-                  </div>
+        <!-- row 1 -->
+        <tr v-for="item in unref(page).results" :key="item.id">
+          <th>
+            <label>
+              <input class="checkbox" type="checkbox"/>
+            </label>
+          </th>
+          <td>
+            <div class="flex items-center gap-3">
+              <div class="avatar">
+                <div class="mask mask-squircle h-12 w-12">
+                  <img alt="Avatar Tailwind CSS Component"
+                       src="https://img.daisyui.com/images/profile/demo/2@94.webp"/>
                 </div>
-                <div>
-                  <div class="font-bold">{{ item.nameFirst }}
-                    <wbr>
+              </div>
+              <div>
+                <div class="font-bold">{{ item.nameFirst }}
+                  <wbr>
                   {{ item.nameLast }}
-                  </div>
-                  <div class="text-sm opacity-50"> {{ item.roleName }}</div>
                 </div>
+                <div class="text-sm opacity-50"> {{ item.roleName }}</div>
               </div>
-            </td>
-            <td>
-              {{ item.email }}
-              <br />
-              <span class="badge badge-ghost badge-sm"> {{ item.phoneNumber }} </span>
-            </td>
-            <td>{{ item.enabled ? t("ui.common.yes") : t("ui.common.no") }}
-              <br />
-              <span class="badge badge-ghost badge-sm"> {{ t("ui.common.added") }} {{
+            </div>
+          </td>
+          <td>
+            {{ item.email }}
+            <br/>
+            <span class="badge badge-ghost badge-sm"> {{ item.phoneNumber }} </span>
+          </td>
+          <td>{{ item.enabled ? t("ui.common.yes") : t("ui.common.no") }}
+            <br/>
+            <span class="badge badge-ghost badge-sm"> {{ t("ui.common.added") }} {{
                 d(Date.parse(item.createdAt))
-                }} </span>
-            </td>
-            <th>
-              <div class="dropdown dropdown-end">
-                <div class="btn btn-ghost btn-xs" role="button" tabindex="0"> {{ t("ui.common.options") }}</div>
-                <ul class="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm" tabindex="-1">
-                  <li><a>Edytuj</a></li>
-                  <li><a class="bg-error text-error-content">Usuń</a></li>
-                </ul>
-              </div>
-            </th>
-          </tr>
+              }} </span>
+          </td>
+          <th>
+            <div class="dropdown dropdown-end">
+              <div class="btn btn-ghost btn-xs" role="button" tabindex="0"> {{ t("ui.common.options") }}</div>
+              <ul class="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm" tabindex="-1">
+                <li><a>Edytuj</a></li>
+                <li><a class="bg-error text-error-content">Usuń</a></li>
+              </ul>
+            </div>
+          </th>
+        </tr>
         </tbody>
       </table>
     </div>
     <div class="join">
-      <button class="join-item btn">«</button>
-      <button class="join-item btn">Page 22</button>
-      <button class="join-item btn">»</button>
+      <button class="join-item btn" @click="() => loadNextPage()">More</button>
     </div>
   </article>
 </template>

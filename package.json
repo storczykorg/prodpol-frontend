@@ -40,5 +40,9 @@
     "vite": "^8.0.9",
     "vue-router": "^5.0.6",
     "vue-tsc": "^3.2.7"
+  },
+  "imports": {
+    "#server/types/*": "./src/data/types/*",
+    "#server/*": "./src/data/server"
   }
 }

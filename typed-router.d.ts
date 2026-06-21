@@ -20,8 +20,9 @@ import type {
 
 declare module 'vue-router' {
   interface TypesConfig {
-    ParamParsers:
-      | never
+    _ParamParsers: {}
+    RouteNamedMap: import('vue-router/auto-routes').RouteNamedMap
+    _RouteFileInfoMap: import('vue-router/auto-routes')._RouteFileInfoMap
   }
 }
 
@@ -60,6 +61,7 @@ declare module 'vue-router/auto-routes' {
       | '/admin/employee-roles/'
       | '/admin/employees/'
       | '/admin/employees/add'
+      | '/admin/employees/edit'
     >,
     '/admin/': RouteRecordInfo<
       '/admin/',
@@ -89,6 +91,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/admin/employees/edit': RouteRecordInfo<
+      '/admin/employees/edit',
+      '/admin/employees/edit',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
   }
 
   /**
@@ -107,17 +116,23 @@ declare module 'vue-router/auto-routes' {
         | '/(Home)/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(Home)/[...path].vue': {
       routes:
         | '/(Home)/[...path]'
       views:
         | never
+      pathParamNames:
+        | 'path'
     }
     'src/pages/(Home)/about.vue': {
       routes:
         | '/(Home)/about'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin.vue': {
@@ -127,13 +142,18 @@ declare module 'vue-router/auto-routes' {
         | '/admin/employee-roles/'
         | '/admin/employees/'
         | '/admin/employees/add'
+        | '/admin/employees/edit'
       views:
         | 'default'
+      pathParamNames:
+        | never
     }
     'src/pages/admin/index.vue': {
       routes:
         | '/admin/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/admin/employee-roles/index.vue': {
@@ -141,17 +161,31 @@ declare module 'vue-router/auto-routes' {
         | '/admin/employee-roles/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/employees/index.vue': {
       routes:
         | '/admin/employees/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/admin/employees/add.vue': {
       routes:
         | '/admin/employees/add'
       views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/employees/edit.vue': {
+      routes:
+        | '/admin/employees/edit'
+      views:
+        | never
+      pathParamNames:
         | never
     }
   }

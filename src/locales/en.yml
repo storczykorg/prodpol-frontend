@@ -1,71 +1,92 @@
-app:
-  name: "Prodpol"
-  footer: "Website made by Orchidea Barbara Zych"
-
 action:
-  login: "Log in"
-  take_me: "Take me to "
-site:
-  homepage: "Homepage"
-  about: "About us"
-  licences: "Licences"
-  cart: "Cart"
-  contact: "Contact"
-  terms: "Terms of Service"
-  privacy: "Privacy Policy"
-
-ui:
-  found_results: "Found no results | Found one result | Found {count} results"
-  sorting:
-    title: "Sorting"
-    sorting_keys: "Sort using"
-    sorting_order: "Order"
-  search:
-    title: "Search"
-    placeholder: "Search for anything..."
-    clear: "Clear search"
-  common:
-    add: "Add"
-    added: "Added"
-    yes: "Yes"
-    no: "No"
-    remove: "Remove"
-    list: "List"
-    refresh: "Refresh"
-    options: "Options"
-
+  cancel: Cancel
+  confirm: Confirm
+  create: Create
+  delete: Delete
+  edit: Edit
+  login: Log in
+  reset: Reset
+  save: Save
+  take_me: 'Take me to '
+  view: View
 admin:
-  link: "Admin Panel"
-  title: "Admin Panel"
-  exit: "Exit Admin Panel"
   dashboard:
-    title: "Dashboard"
-    recent_activity: "Recent Activity"
-    system_status: "System Status"
-  settings:
-    title: "Settings"
-    general: "General"
-    security: "Security"
-    notifications: "Notifications"
+    recent_activity: Recent Activity
+    system_status: System Status
+    title: Dashboard
   employees:
-    title: "Employees"
-    link: "Manage Employees"
+    add: Add employee
+    enabled: Enabled
+    link: Manage Employees
     roles:
-      link: "Manage Groups"
-      id: "Id"
-      role_name: "Role name"
-      display_name: "Displayed name"
-      employee_count: "Employees"
+      display_name: Displayed name
+      employee_count: Employees
+      id: Id
+      link: Manage Groups
+      role_name: Role name
+      title: Employee Groups
     search:
-      identifier: "Identifier"
-      full_name: "Full name"
-      group: "Group"
-      all_groups: "All"
-      no_group: "No group"
+      all_groups: All
+      full_name: Imię oraz nazwisko
+      group: Group
+      identifier: Identifier
+      no_group: No group
+    title: Employees
+  exit: Exit Admin Panel
+  link: Admin Panel
+  search:
+    all_groups: Everyone
+    full_name: Full name
+    group: Group
+    identifier: Id
+    no_group: None
+  settings:
+    general: General
+    notifications: Notifications
+    security: Security
+    title: Settings
+  title: Admin Panel
+app:
+  footer: Website made by Orchidea Barbara Zych
+  name: Prodpol
 message:
-  resource_not_found: "The resource you're looking for is not here"
-  error_occurred: "An error occurred while processing your request"
-  please_wait: "Please wait while we process your request"
-  success_saved: "Changes saved successfully"
-  invalid_credentials: "Invalid credentials. Please try again."
-  account_locked: "Your account is temporarily locked. Please try again later."
+  account_locked: Your account is temporarily locked. Please try again later.
+  error_occurred: An error occurred while processing your request
+  invalid_credentials: Invalid credentials. Please try again.
+  please_wait: Please wait while we process your request
+  resource_not_found: The resource you're looking for is not here
+  success_saved: Changes saved successfully
+site:
+  about: About us
+  cart: Cart
+  contact: Contact
+  homepage: Homepage
+  licences: Licences
+  privacy: Privacy Policy
+  terms: Terms of Service
+ui:
+  common:
+    add: Add
+    added: Added
+    list: List
+    no: No
+    options: Options
+    refresh: Refresh
+    remove: Remove
+    yes: Yes
+  found_results: Found no results | Found one result | Found {count} results
+  search:
+    clear: Clear search
+    placeholder: Search for anything...
+    title: Search
+  sorting:
+    ascending: Ascending
+    created_at: Creation date
+    descending: Descending
+    full_name: Full name
+    identifier: Identifier
+    role_name: Role name
+    sorting_dir: Sorting Direction
+    sorting_keys: Sort using
+    sorting_order: Sorting Order
+    title: Sorting

@@ -8,7 +8,7 @@ import { defineQuery, useQuery, type UseQueryReturn } from "@pinia/colada";
 import {
   type EmployeeRoleArray,
   employeeRoleArraySchema,
-} from "../types/EmployeeRole";
+} from "#server/types/employees/EmployeeRole.ts";
 
 export const useAllEmployeeRolesQuery: () => UseQueryReturn<
   EmployeeRoleArray,

@@ -1,82 +1,92 @@
-app:
-  name: "Prodpol"
-  footer: "Strona wykonana przez Orchidea Barbara Zych"
-
 action:
-  login: "Zaloguj się"
-  take_me: "Załaduj się do"
-  cancel: "Anuluj"
-  confirm: "Potwierdź"
-  delete: "Usuń"
-  edit: "Edytuj"
-  view: "Wyświetl"
-  create: "Utwórz"
-  save: "Zapisz"
-  reset: "Resetuj"
-
-site:
-  homepage: "Strona główna"
-  about: "O nas"
-  licences: "Licencje"
-  cart: "Koszyk"
-  contact: "Kontakt"
-  terms: "Warunki użytkowania"
-  privacy: "Polityka prywatności"
-
-ui:
-  found_results: "Nie znaleziono wyników | Znaleziono jeden wynik | Znaleziono {count} wyników"
-  sorting:
-    title: "Sortowanie"
-    sorting_keys: "Sortuj według"
-    sorting_dir: "Kolejność"
-  search:
-    title: "Wyszukiwanie"
-    placeholder: "Wyszukaj coś..."
-    clear: "Wyczyść wyszukiwanie"
-  common:
-    add: "Dodaj"
-    added: "Dodano"
-    remove: "Usuń"
-    yes: "Tak"
-    no: "Nie"
-    list: "Pokaż listę"
-    refresh: "Odśwież"
-    options: "Opcje"
-
+  cancel: Anuluj
+  confirm: Potwierdź
+  create: Utwórz
+  delete: Usuń
+  edit: Edytuj
+  login: Zaloguj się
+  reset: Resetuj
+  save: Zapisz
+  take_me: Załaduj się do
+  view: Wyświetl
 admin:
-  link: "Panel administracyjny"
-  title: "Panel administracyjny"
-  exit: "Wyjście z panelu"
   dashboard:
-    title: "Panel"
-    recent_activity: "Ostatnie akcje"
-    system_status: "Status systemu"
-  settings:
-    title: "Ustawienia"
-    general: "Ogólne"
-    security: "Bezpieczeństwo"
-    notifications: "Powiadomienia"
+    recent_activity: Ostatnie akcje
+    system_status: Status systemu
+    title: Panel
   employees:
-    title: "Pracownicy"
-    link: "Zarządzaj pracownikami"
+    add: Dodaj pracownika
+    enabled: Aktywne
+    link: Zarządzaj pracownikami
     roles:
-      link: "Zarządzaj grupami"
-      title: "Grupy Pracowników"
-      id: "Id"
-      role_name: "Nazwa roli"
-      display_name: "Wyświetlona nazwa"
-    enabled: "Aktywowane"
+      display_name: Wyświetlona nazwa
+      employee_count: Pracownicy
+      id: Id
+      link: Zarządzaj grupami
+      role_name: Nazwa roli
+      title: Grupy Pracowników
+    search:
+      all_groups: Wszyscy
+      full_name: Full name
+      group: Grupa
+      identifier: Identyfikator
+      no_group: Bez grupy
+    title: Pracownicy
+  exit: Wyjście z panelu
+  link: Panel administracyjny
   search:
-    identifier: "Identyfikator"
-    full_name: "Imię i nazwisko"
-    group: "Grupa"
-    all_groups: "Wszystkie"
-    no_group: "Żadna"
-
+    all_groups: Wszystkie
+    full_name: Imię i nazwisko
+    group: Grupa
+    identifier: Identyfikator
+    no_group: Żadna
+  settings:
+    general: Ogólne
+    notifications: Powiadomienia
+    security: Bezpieczeństwo
+    title: Ustawienia
+  title: Panel administracyjny
+app:
+  footer: Strona wykonana przez Orchidea Barbara Zych
+  name: Prodpol
 message:
-  resource_not_found: "Zasób, który szukasz, nie istnieje"
-  error_occurred: "Wystąpił błąd podczas przetwarzania Twojego żądania"
-  please_wait: "Czekaj, podczas przetwarzania Twojego żądania"
-  success_saved: "Zmiany zapisane pomyślnie"
-  invalid_credentials: "Nieprawidłowe dane logowania. Proszę spróbuj ponownie."
-  account_locked: "Twoje konto jest tymczasowo zablokowane. Proszę spróbuj ponownie później."
+  account_locked: Twoje konto jest tymczasowo zablokowane. Proszę spróbuj ponownie później.
+  error_occurred: Wystąpił błąd podczas przetwarzania Twojego żądania
+  invalid_credentials: Nieprawidłowe dane logowania. Proszę spróbuj ponownie.
+  please_wait: Czekaj, podczas przetwarzania Twojego żądania
+  resource_not_found: Zasób, który szukasz, nie istnieje
+  success_saved: Zmiany zapisane pomyślnie
+site:
+  about: O nas
+  cart: Koszyk
+  contact: Kontakt
+  homepage: Strona główna
+  licences: Licencje
+  privacy: Polityka prywatności
+  terms: Warunki użytkowania
+ui:
+  common:
+    add: Dodaj
+    added: Dodano
+    list: Pokaż listę
+    no: Nie
+    options: Opcje
+    refresh: Odśwież
+    remove: Usuń
+    yes: Tak
+  found_results: Nie znaleziono wyników | Znaleziono jeden wynik | Znaleziono {count} wyników
+  search:
+    clear: Wyczyść wyszukiwanie
+    placeholder: Wyszukaj coś...
+    title: Wyszukiwanie
+  sorting:
+    ascending: Rosnąco
+    created_at: Data utworzenia
+    descending: Malejąco
+    full_name: Imienia i Nazwiska
+    identifier: Identyfikatora
+    role_name: Nazwy roli
+    sorting_dir: Kolejność
+    sorting_keys: Sortuj według
+    sorting_order: Kolejność sortowania
+    title: Sortowanie

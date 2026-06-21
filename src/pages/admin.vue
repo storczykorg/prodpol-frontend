@@ -5,6 +5,7 @@
   -->
 
 <template>
+
   <router-view/>
 </template>
 <route lang="json">

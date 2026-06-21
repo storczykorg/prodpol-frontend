@@ -7,7 +7,7 @@
 <script setup lang="ts">
 
 import commitInfo from "virtual:commitInfo";
-import {useServerPing} from "../../data/server/status.ts";
+import {useServerPing} from "../../data/server/employees/status.ts";
 
 const { data, isLoading, error } = useServerPing();
 </script>

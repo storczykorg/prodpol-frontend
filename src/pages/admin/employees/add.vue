@@ -6,8 +6,10 @@
 
 <script setup lang="ts">
 import {ArrowLeft} from "@lucide/vue";
-import {computed, onBeforeUnmount, type Ref, ref, watch} from "vue";
+import {computed, onBeforeUnmount, reactive, type Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
+import EmployeeGroupSelector from "../../../components/admin/EmployeeGroupSelector.vue";
+import {useRouteQuery} from "@vueuse/router";
 
 const router = useRouter();
 
@@ -35,6 +37,18 @@ onBeforeUnmount(() => {
   picUrl.value = null
 })
 
+const form = reactive({
+  email: useRouteQuery("email", "" as string, { transform: String }),
+  password: ref("password"),
+  setPassword: useRouteQuery("setPassword", "", { transform: Boolean }),
+  phoneNumber: useRouteQuery("phone", "" as string, { transform: String }),
+  role: useRouteQuery("role", "" as string),
+  nameFirst: useRouteQuery("name", "" as string, { transform: String }),
+  nameLast: useRouteQuery("nameLast", "" as string, { transform: String }),
+})
+
+
+
 </script>
 
 <template>
@@ -60,28 +74,35 @@ items-center
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Imię:</legend>
-      <input type="text" class="input" placeholder="Type here" />
+      <input type="text" class="input"
+             placeholder="Type here"
+             v-model="form.nameFirst"
+      />
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Nazwisko:</legend>
-      <input type="text" class="input" placeholder="Type here" />
+      <input type="text" class="input"
+             placeholder="Type here"
+             v-model="form.nameLast"
+      />
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Email:</legend>
-      <input type="email" class="input" placeholder="Type here" />
+      <input type="email" class="input"
+             placeholder="Type here"
+             v-model="form.email"
+      />
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Numer telefonu:</legend>
-      <input type="tel" class="input" placeholder="Type here" />
+      <input type="tel" class="input"
+             placeholder="Type here"
+             v-model="form.phoneNumber"
+      />
     </fieldset>
     <fieldset class="fieldset">
       <legend class="fieldset-legend">Grupa</legend>
-      <select class="select select-neutral text-sm">
-        <option>Magazyn</option>
-        <option>Obsługa klienta</option>
-        <option>Administracja</option>
-        <option selected>Bez grupy</option>
-      </select>
+      <employee-group-selector v-model="form.role"/>
     </fieldset>
     <button class="btn btn-primary btn-wide my-4">Dodaj</button>
   </div>

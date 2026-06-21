@@ -7,5 +7,5 @@
 import z from "zod";
 
 export const employeeOrderKeys
-    = z.enum(["EmployeeId", "Email", "PhoneNumber", "FullName"]);
+  = z.enum(["EmployeeId", "Email", "PhoneNumber", "FullName"]);
 export type EmployeeOrderKeys = z.infer<typeof employeeOrderKeys>;

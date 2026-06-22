@@ -10,31 +10,36 @@ import {
   defineMutationOptions,
   useQuery, type UseQueryReturn,
 } from "@pinia/colada";
-import { type Employee, type EmployeeArray } from "#server/types/employees/Employee.ts";
-import { type EmployeeRead, employeeReadArraySchema, employeeReadSchema } from "#server/types/employees/EmployeeRead.ts";
+import {
+  type EmployeeRead,
+  type EmployeeReadArray,
+  employeeReadArraySchema,
+  employeeReadSchema,
+} from "#server/types/employees/EmployeeRead.ts";
 import { type MaybeRefOrGetter, toValue } from "vue";
 import type { EmployeeCreateForm } from "#server/types/employees/forms/EmployeeCreateForm.ts";
+import { apiErrorSchema, ApiError } from "#server/types/ApiError.ts";
 
-export const useAllEmployeesQuery: () => UseQueryReturn<unknown, Error, undefined> = defineQuery(() => {
+export const useAllEmployeesQuery: () => UseQueryReturn<EmployeeReadArray, Error, undefined> = defineQuery(() => {
   return useQuery({
     key: () => ["data/employees"],
-    query: () => fetch(`/api/data/employees/all`, {
-      cache: "no-cache",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (!res.ok)
-          throw Error("Error");
-        return res.json();
-      })
-      .then((res) => {
-        return employeeReadArraySchema.parse(res) satisfies EmployeeArray;
-      }),
+    query: async () => {
+      const url = new URL(`/api/data/employees/all`, window.location.origin);
+
+      const res = await fetch(url, {
+        cache: "no-cache",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok)
+        throw Error("Error");
+      const res_1 = await res.json();
+      return employeeReadArraySchema.parse(res_1) satisfies EmployeeReadArray;
+    },
     staleTime: 60_000,
-    placeholderData: [] satisfies EmployeeArray,
+    placeholderData: [] satisfies EmployeeReadArray,
   });
 });
 
@@ -63,17 +68,62 @@ export function useEmployeeQuery(userId: MaybeRefOrGetter<number>): UseQueryRetu
   return useQuery(() => defineEmployeeQuery(toValue(userId)));
 }
 
-export const useEmployeeCreate = defineMutationOptions((emp: Employee) => ({
-  key: ["employee", "create", emp],
+export const useEmployeeCreate = defineMutationOptions(() => ({
+  key: ["employee", "create"],
   mutation: async (vars: EmployeeCreateForm) => {
     const response = await fetch("/api/data/employees/", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(vars),
     });
-    if (response.ok) {
-      return employeeReadSchema.safeParse(response.json());
+    if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      const parsed = apiErrorSchema.safeParse(body);
+      if (parsed.success) {
+        throw new ApiError(parsed.data.status, parsed.data.errors);
+      }
+      throw new Error(`Failed to create employee: ${response.statusText}`);
     }
+    return employeeReadSchema.parse(await response.json());
+  },
+}));
 
-    throw new Error(`Failed to create employee: ${response.statusText}`);
+export const useEmployeeUpdate = defineMutationOptions(() => ({
+  key: ["employee", "update"],
+  mutation: async (vars: {
+    id: number;
+    patch: Array<{ op: "replace" | "add" | "remove"; path: string; value?: unknown }>;
+  }) => {
+    const response = await fetch(`/api/data/employees/${vars.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "text/json" },
+      body: JSON.stringify(vars.patch),
+    });
+    if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      const parsed = apiErrorSchema.safeParse(body);
+      if (parsed.success) {
+        throw new ApiError(parsed.data.status, parsed.data.errors);
+      }
+      throw new Error(`Failed to update employee: ${response.statusText}`);
+    }
+    return employeeReadSchema.parse(await response.json());
+  },
+}));
+
+export const useEmployeeDelete = defineMutationOptions(() => ({
+  key: ["employee", "delete"],
+  mutation: async (id: number) => {
+    const response = await fetch(`/api/data/employees/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      const parsed = apiErrorSchema.safeParse(body);
+      if (parsed.success) {
+        throw new ApiError(parsed.data.status, parsed.data.errors);
+      }
+      throw new Error(`Failed to delete employee: ${response.statusText}`);
+    }
   },
 }));

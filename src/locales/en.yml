@@ -14,6 +14,15 @@ admin:
     recent_activity: Recent Activity
     system_status: System Status
     title: Dashboard
+  employee:
+    roles:
+      admin: Administration
+      customer_service: Customer service
+      janitor: Janitor
+      machinist: Machinist
+      special:
+        system: System
+      warehouse: Warehouse
   employees:
     add: Add employee
     enabled: Enabled
@@ -21,6 +30,7 @@ admin:
     roles:
       display_name: Displayed name
       employee_count: Employees
+      employee_list: Employee list
       id: Id
       link: Manage Groups
       role_name: Role name

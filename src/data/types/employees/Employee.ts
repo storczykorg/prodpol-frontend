@@ -10,10 +10,10 @@ export const employeeSchema = z.object({
   id: z.number(),
   nameFirst: z.string().regex(/^(\p{L}+\s?)+$/u),
   nameLast: z.string().regex(/^(\p{L}+\s?)+$/u),
-  email: z.email().regex(/(([a-zA-Z\-_.+/]+)|("([+.a-zA-Z_-]+)"))+@([a-zA-Z]+)(\.([a-zA-Z])+)*$/),
+  email: z.string().includes("@"),
   phoneNumber: z.string().regex(/^\+?[1-9][0-9]{7,14}$/),
   createdAt: z.string(),
-  roleId: z.int(),
+  roleId: z.int().nullable().transform(v => v ?? 0),
   enabled: z.boolean(),
 });
 

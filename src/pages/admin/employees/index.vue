@@ -14,10 +14,11 @@ import type {EmployeeSearchOption} from "#server/types/employees/EmployeeSearchO
 import {useInfiniteQuery} from "@pinia/colada";
 import {refDebounced, useCached} from "@vueuse/core";
 import EmployeePicture from "../../../components/employees/EmployeePicture.vue";
-import type { EmployeeSearchResult } from "#server/types/employees/EmployeeSearchResult.ts";
+import type {EmployeeSearchResult} from "#server/types/employees/EmployeeSearchResult.ts";
 import type {EmployeeRead} from "#server/types/employees/EmployeeRead.ts";
 import {defineSearchEmployeesQuery} from "../../../data/server/employees/defineSearchEmployeesQuery";
 import EmployeeListOptions from "../../../components/admin/EmployeeListOptions.vue";
+import EmployeeInfoRow from "../../../components/admin/EmployeeInfoRow.vue";
 
 interface EmployeeSearchForm {
   fullName: string
@@ -38,9 +39,9 @@ const search_params: EmployeeSearchForm = reactive({
   email: useRouteQuery<string>("email", ''),
   orderBy: useRouteQuery<EmployeeOrderKeys>("sort_key", 'EmployeeId'),
   asc: useRouteQuery<string>("sort", 'false'),
-  limit: useRouteQuery("limit", '10', { transform: Number}),
+  limit: useRouteQuery("limit", '10', {transform: Number}),
   roleNames: useRouteQuery<string[]>("roleNames", []),
-  cursor: useRouteQuery("page", '-1', { transform: Number}),
+  cursor: useRouteQuery("page", '-1', {transform: Number}),
 })
 
 const coladaSearchOption: ComputedRef<EmployeeSearchOption> = computed(() => {
@@ -116,52 +117,16 @@ const totalResults = computed(() => {
               <input class="checkbox" type="checkbox"/>
             </label>
           </th>
-          <th> {{ t("admin.search.full_name") }}</th>
+          <th>
+            {{ t("admin.search.full_name") }}
+          </th>
           <th> {{ t("site.contact") }}</th>
           <th> {{ t("admin.employees.enabled") }}</th>
           <th></th>
         </tr>
         </thead>
         <tbody v-for="(page, pageIndex) of pages" :key="pageIndex">
-        <tr v-for="(item) in ((page?.results ?? []) satisfies EmployeeRead[])" :key="item.id">
-          <th>
-            <label>
-              <input class="checkbox" type="checkbox"/>
-            </label>
-          </th>
-          <td>
-            <div class="flex items-center gap-3">
-              <employee-picture :emp="item"/>
-              <div>
-                <div class="font-bold">{{ item.nameFirst }}
-                  <wbr>
-                  {{ item.nameLast }}
-                </div>
-                <div class="text-sm opacity-50"> {{ item.roleName }}</div>
-              </div>
-            </div>
-          </td>
-          <td>
-            {{ item.email }}
-            <br/>
-            <span class="badge badge-ghost badge-sm"> {{ item.phoneNumber }} </span>
-          </td>
-          <td>{{ (item.enabled ? t("ui.common.yes") : t("ui.common.no")) }}
-            <br/>
-            <span class="badge badge-ghost badge-sm"> {{ t("ui.common.added") }}
-                {{ d(item.createdAt) }}
-              </span>
-          </td>
-          <th>
-            <div class="dropdown dropdown-end">
-              <div class="btn btn-ghost btn-xs" role="button" tabindex="0"> {{ t("ui.common.options") }}</div>
-              <ul class="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm" tabindex="-1">
-                <li><router-link :to="`/admin/employees/edit?id=${item.id}`">Edytuj</router-link></li>
-                <li><a class="bg-error text-error-content">Usuń</a></li>
-              </ul>
-            </div>
-          </th>
-        </tr>
+        <EmployeeInfoRow :emp="item" v-for="(item) in ((page?.results ?? []) satisfies EmployeeRead[])" :key="item.id"/>
         </tbody>
       </table>
     </div>

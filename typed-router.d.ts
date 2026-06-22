@@ -60,6 +60,7 @@ declare module 'vue-router/auto-routes' {
       | '/admin/'
       | '/admin/employee-roles/'
       | '/admin/employees/'
+      | '/admin/employees/[id]'
       | '/admin/employees/add'
       | '/admin/employees/edit'
     >,
@@ -82,6 +83,13 @@ declare module 'vue-router/auto-routes' {
       '/admin/employees',
       Record<never, never>,
       Record<never, never>,
+      | never
+    >,
+    '/admin/employees/[id]': RouteRecordInfo<
+      '/admin/employees/[id]',
+      '/admin/employees/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
       | never
     >,
     '/admin/employees/add': RouteRecordInfo<
@@ -141,6 +149,7 @@ declare module 'vue-router/auto-routes' {
         | '/admin/'
         | '/admin/employee-roles/'
         | '/admin/employees/'
+        | '/admin/employees/[id]'
         | '/admin/employees/add'
         | '/admin/employees/edit'
       views:
@@ -171,6 +180,14 @@ declare module 'vue-router/auto-routes' {
         | never
       pathParamNames:
         | never
+    }
+    'src/pages/admin/employees/[id].vue': {
+      routes:
+        | '/admin/employees/[id]'
+      views:
+        | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/admin/employees/add.vue': {
       routes:

@@ -1,18 +1,14 @@
-<!--
-  - Copyright 2026 storczyk.org. All rights reserved.
-  - This work is licensed under the terms of the MIT license.
-  - For a copy, see <https://opensource.org/licenses/MIT>.
-  -->
-
 <script setup lang="ts">
 import {ArrowLeft} from "@lucide/vue";
 import {computed, onBeforeUnmount, reactive, type Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import EmployeeGroupSelector from "../../../components/admin/EmployeeGroupSelector.vue";
 import {useRouteQuery} from "@vueuse/router";
-import {useQuery} from "@pinia/colada";
-import {defineEmployeeQuery} from "../../../data/server/employees/employees.ts";
+import {useMutation, useQuery} from "@pinia/colada";
+import {defineEmployeeQuery, useEmployeeUpdate} from "../../../data/server/employees/employees.ts";
+import {useAllEmployeeRolesQuery} from "../../../data/server/employees/employeeRoles.ts";
 import type {EmployeeRead} from "#server/types/employees/EmployeeRead.ts";
+import type {EmployeeRoleReadArray} from "#server/types/employees/EmployeeRoleRead.ts";
 
 const router = useRouter();
 
@@ -30,10 +26,10 @@ const emp = computed(() => data?.value ?? {
   phoneNumber: "",
   createdAt: "",
   roleId: 0,
+  roleName: "",
   enabled: false,
   normalizedName: "",
-  roleName: "",
-  normalizedEmail: ""
+  normalizedEmail: "",
 } satisfies EmployeeRead)
 
 const form = reactive({
@@ -41,8 +37,62 @@ const form = reactive({
   lastName: "",
   email: "",
   phone: "",
-  groupId: null as number | null,
+  roleName: null as string | null,
 })
+
+const {data: roles} = useAllEmployeeRolesQuery();
+
+const {
+  mutateAsync: updateEmployee,
+  error: updateError,
+  isLoading: updateLoading,
+} = useMutation(useEmployeeUpdate());
+
+watch(emp, (e) => {
+  form.firstName = e.nameFirst;
+  form.lastName = e.nameLast;
+  form.email = e.email;
+  form.phone = e.phoneNumber;
+  form.roleName = e.roleName;
+}, {immediate: true})
+
+function resolveRoleId(roleName: string | null, allRoles: EmployeeRoleReadArray | undefined): number | null {
+  if (!roleName || !allRoles) return null;
+  const found = allRoles.find(r => r.roleName === roleName);
+  return found ? found.id : null;
+}
+
+async function onSubmit() {
+  const patch: Array<{ op: "replace"; path: string; value: unknown }> = [];
+
+  if (form.firstName !== emp.value.nameFirst) {
+    patch.push({op: "replace", path: "/nameFirst", value: form.firstName});
+  }
+  if (form.lastName !== emp.value.nameLast) {
+    patch.push({op: "replace", path: "/nameLast", value: form.lastName});
+  }
+  if (form.email !== emp.value.email) {
+    patch.push({op: "replace", path: "/email", value: form.email});
+  }
+  if (form.phone !== emp.value.phoneNumber) {
+    patch.push({op: "replace", path: "/phoneNumber", value: form.phone});
+  }
+
+  const currentRoleId = emp.value.roleId;
+  const newRoleId = resolveRoleId(form.roleName, roles.value);
+  if (newRoleId !== currentRoleId) {
+    patch.push({op: "replace", path: "/roleId", value: newRoleId});
+  }
+
+  if (patch.length === 0) return;
+
+  try {
+    await updateEmployee({id: userId.value, patch});
+    // success — cache is auto-invalidated by mutation key
+  } catch {
+    // error is reactive via updateEmployee.error
+  }
+}
 
 let picUrl: Ref<string | null> = ref(null);
 
@@ -50,8 +100,9 @@ const canBack = computed(() => {
   return window.history.length
 })
 
-function fileChanged(e: InputEvent) {
-  const files = e.dataTransfer?.files || (e.target as HTMLInputElement).files;
+function fileChanged(e: Event) {
+  const input = e.target as HTMLInputElement;
+  const files = (e as InputEvent).dataTransfer?.files || input.files;
   const file = files?.item(0)
   if (file == null) return;
 
@@ -68,10 +119,6 @@ onBeforeUnmount(() => {
   picUrl.value = null
 })
 
-function onSubmit() {
-
-}
-
 </script>
 
 <template>
@@ -86,6 +133,11 @@ function onSubmit() {
         <p class="text-sm text-base-content/70">Zaktualizuj dane profilowe i kontaktowe</p>
       </div>
     </header>
+
+    <div v-if="updateLoading" class="alert alert-info mb-4">Zapisywanie...</div>
+    <div v-if="updateError" class="alert alert-error mb-4">
+      {{ updateError?.message ?? "Wystąpił błąd podczas zapisu" }}
+    </div>
 
     <form @submit.prevent="onSubmit" class="flex flex-col gap-8">
 
@@ -153,12 +205,10 @@ function onSubmit() {
           <div>
             <h2 class="text-lg font-semibold mb-4">Organizacja</h2>
             <label class="form-control w-full">
-              <span class="label"><span class="label-text">Grupa: {{ emp.roleName }}</span></span>
-              <br/>
+              <span class="label"><span class="label-text">Grupa:</span></span>
               <employee-group-selector
-                  :defaultValue="emp.roleName"
-                  allow-empty="allow-empty"
-                  v-model="form.groupId" />
+                  allow-empty
+                  v-model="form.roleName" />
             </label>
           </div>
 
@@ -167,7 +217,7 @@ function onSubmit() {
 
       <div class="flex justify-end gap-3 mt-6 border-t border-base-200 pt-6">
         <button type="button" class="btn btn-ghost" @click="router.back()">Anuluj</button>
-        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+        <button type="submit" class="btn btn-primary" :disabled="updateLoading">Zapisz zmiany</button>
       </div>
 
     </form>

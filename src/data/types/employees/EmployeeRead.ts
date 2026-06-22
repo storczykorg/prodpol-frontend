@@ -9,7 +9,7 @@ import z from "zod";
 
 export const employeeReadSchema = employeeSchema.extend({
   normalizedName: z.string(),
-  roleName: z.string(),
+  roleName: z.string().nullable().transform(v => v ?? ""),
   normalizedEmail: z.string(),
 });
 export const employeeReadArraySchema = employeeReadSchema.array();

@@ -1,15 +1,15 @@
-<!--
-  - Copyright 2026 storczyk.org. All rights reserved.
-  - This work is licensed under the terms of the MIT license.
-  - For a copy, see <https://opensource.org/licenses/MIT>.
-  -->
-
 <script setup lang="ts">
 import {ArrowLeft} from "@lucide/vue";
 import {computed, onBeforeUnmount, reactive, type Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import EmployeeGroupSelector from "../../../components/admin/EmployeeGroupSelector.vue";
 import {useRouteQuery} from "@vueuse/router";
+import {useMutation} from "@pinia/colada";
+import {useEmployeeCreate, useEmployeeUpdate} from "../../../data/server/employees/employees.ts";
+import {useAllEmployeeRolesQuery} from "../../../data/server/employees/employeeRoles.ts";
+import type {EmployeeCreateForm} from "#server/types/employees/forms/EmployeeCreateForm.ts";
+import type {EmployeeRoleReadArray} from "#server/types/employees/EmployeeRoleRead.ts";
+import {ApiError} from "#server/types/ApiError.ts";
 
 const router = useRouter();
 
@@ -39,7 +39,7 @@ onBeforeUnmount(() => {
 
 const form = reactive({
   email: useRouteQuery("email", "" as string, { transform: String }),
-  password: ref("password"),
+  password: ref(""),
   setPassword: useRouteQuery("setPassword", "", { transform: Boolean }),
   phoneNumber: useRouteQuery("phone", "" as string, { transform: String }),
   role: useRouteQuery("role", "" as string),
@@ -47,8 +47,32 @@ const form = reactive({
   nameLast: useRouteQuery("nameLast", "" as string, { transform: String }),
 })
 
+const {
+  mutateAsync: createEmployee,
+  error: createError,
+  isLoading: createLoading,
+} = useMutation(useEmployeeCreate());
 
+async function onSubmit() {
+  const payload: EmployeeCreateForm = {
+    email: form.email,
+    nameFirst: form.nameFirst,
+    nameLast: form.nameLast,
+    phoneNumber: form.phoneNumber,
+  };
 
+  if (form.setPassword && form.password) {
+    payload.password = form.password;
+  }
+
+  try {
+    const created = await createEmployee(payload);
+
+    router.push(`/admin/employees/${created.id}`);
+  } catch {
+    // error is reactive via createEmployee.error
+  }
+}
 </script>
 
 <template>
@@ -104,7 +128,19 @@ items-center
       <legend class="fieldset-legend">Grupa</legend>
       <employee-group-selector v-model="form.role"/>
     </fieldset>
-    <button class="btn btn-primary btn-wide my-4">Dodaj</button>
+
+    <div v-if="createError" class="alert alert-error mt-4">
+      <div v-if="createError instanceof ApiError">
+        <div v-for="(msgs, field) in createError.errors" :key="field">
+          <strong>{{ field }}:</strong> {{ msgs.join("; ") }}
+        </div>
+      </div>
+      <div v-else>
+        {{ createError?.message ?? "Wystąpił błąd podczas dodawania pracownika" }}
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-wide my-4" @click="onSubmit" :disabled="createLoading">Dodaj</button>
   </div>
 </article>
 </template>

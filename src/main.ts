@@ -11,10 +11,10 @@ import { createPinia } from "pinia";
 import { PiniaColada } from "@pinia/colada";
 import { i18n } from "./i18n.ts";
 import { PiniaColadaAutoRefetch } from "@pinia/colada-plugin-auto-refetch";
-
+import Popper from "vue3-popper";
 const pinia = createPinia();
 
-createApp(App)
+const app = createApp(App)
   .use(router)
   .use(pinia)
   .use(PiniaColada, {
@@ -24,5 +24,8 @@ createApp(App)
       }),
     ],
   })
-  .use(i18n)
-  .mount("#app");
+  .use(i18n);
+
+app.component("Popper", Popper);
+
+app.mount("#app");

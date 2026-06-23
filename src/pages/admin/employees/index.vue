@@ -88,7 +88,7 @@ const totalResults = computed(() => {
     <h2 class="font-bold text-xl">{{ t("admin.employees.link") }}</h2>
     <router-link class="btn btn-primary m-4" to="/admin/employees/add">{{ t("admin.employees.add") }}</router-link>
 
-    <EmployeeListOptions v-model="search_params"/>
+    <EmployeeListOptions @refetch="() => refetch()" v-model="search_params"/>
     <div v-if="error" class="flex text-center justify-center w-full">
       <div role="alert" class="alert alert-error alert-soft m-8 w-full">
         <details class="collapse">

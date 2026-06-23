@@ -58,6 +58,8 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       Record<never, never>,
       | '/admin/'
+      | '/admin/auth/forgotPassword'
+      | '/admin/auth/login'
       | '/admin/employee-roles/'
       | '/admin/employees/'
       | '/admin/employees/[id]'
@@ -67,6 +69,20 @@ declare module 'vue-router/auto-routes' {
     '/admin/': RouteRecordInfo<
       '/admin/',
       '/admin',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/auth/forgotPassword': RouteRecordInfo<
+      '/admin/auth/forgotPassword',
+      '/admin/auth/forgotPassword',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/auth/login': RouteRecordInfo<
+      '/admin/auth/login',
+      '/admin/auth/login',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -147,6 +163,8 @@ declare module 'vue-router/auto-routes' {
       routes:
         | '/admin'
         | '/admin/'
+        | '/admin/auth/forgotPassword'
+        | '/admin/auth/login'
         | '/admin/employee-roles/'
         | '/admin/employees/'
         | '/admin/employees/[id]'
@@ -160,6 +178,22 @@ declare module 'vue-router/auto-routes' {
     'src/pages/admin/index.vue': {
       routes:
         | '/admin/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/auth/forgotPassword.vue': {
+      routes:
+        | '/admin/auth/forgotPassword'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/auth/login.vue': {
+      routes:
+        | '/admin/auth/login'
       views:
         | never
       pathParamNames:

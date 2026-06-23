@@ -53,9 +53,9 @@
   },
   "imports": {
     "#server/types/*": "./src/data/types/*",
-    "#server/*": "./src/data/server",
-    "#colada/*": "./src/data/server",
-    "#pinia/*": "./src/data/store"
+    "#server/*": "./src/data/server/*",
+    "#colada/*": "./src/data/server/*",
+    "#pinia/*": "./src/data/store/*"
   },
   "msw": {
     "workerDirectory": [

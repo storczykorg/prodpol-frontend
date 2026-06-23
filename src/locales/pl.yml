@@ -1,3 +1,12 @@
+auth:
+  forgot_password:
+    back_to_login: Powrót do logowania
+    email: Email
+    send: Wyślij link resetujący
+    success: Sprawdź swoją skrzynkę — jeśli konto istnieje, otrzymasz link do resetowania hasła.
+    title: Zapomniałem hasła
+  login:
+    forgot_password: Zapomniałeś hasła?
 action:
   cancel: Anuluj
   confirm: Potwierdź

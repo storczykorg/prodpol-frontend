@@ -11,6 +11,7 @@ import { createPinia } from "pinia";
 import { PiniaColada } from "@pinia/colada";
 import { i18n } from "./i18n.ts";
 import { PiniaColadaAutoRefetch } from "@pinia/colada-plugin-auto-refetch";
+import { PiniaColadaAuthPlugin } from "#server/auth/coladaAuthPlugin.ts";
 import Popper from "vue3-popper";
 const pinia = createPinia();
 
@@ -22,6 +23,7 @@ const app = createApp(App)
       PiniaColadaAutoRefetch({
         autoRefetch: false,
       }),
+      PiniaColadaAuthPlugin,
     ],
   })
   .use(i18n);
